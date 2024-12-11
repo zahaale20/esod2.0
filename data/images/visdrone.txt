@@ -1,0 +1,10 @@
+./VisDrone/VisDrone2019-DET-val/images/0000277_02001_d_0000549.jpg
+./VisDrone/VisDrone2019-DET-val/images/0000103_02544_d_0000029.jpg
+./VisDrone/VisDrone2019-DET-val/images/0000359_03529_d_0000712.jpg
+./VisDrone/VisDrone2019-DET-val/images/0000276_06001_d_0000537.jpg
+./VisDrone/VisDrone2019-DET-val/images/0000024_01543_d_0000015.jpg
+./VisDrone/VisDrone2019-DET-test-dev/images/9999938_00000_d_0000343.jpg
+./VisDrone/VisDrone2019-DET-test-dev/images/0000006_05575_d_0000016.jpg
+./VisDrone/VisDrone2019-DET-test-dev/images/0000299_01800_d_0000100.jpg
+./VisDrone/VisDrone2019-DET-test-dev/images/9999973_00000_d_0000069.jpg
+./VisDrone/VisDrone2019-DET-test-dev/images/0000074_01218_d_0000002.jpg
