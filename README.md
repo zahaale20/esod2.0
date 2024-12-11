@@ -168,7 +168,7 @@ python detect.py --weights weights/yolov5m.pt --source data/images/visdrone.txt 
 
 ## Acknowledgment
 
-A large part of the code is borrowed from [YOLOv5](https://github.com/ultralytics/yolov5). Many thanks for this wonderful work.
+A large part of the code is borrowed from YOLO. Many thanks for this wonderful work.
 
 ## Citation
 
