@@ -10,6 +10,7 @@ import logging
 import sys
 from copy import deepcopy
 from pathlib import Path
+import warnings
 
 sys.path.append(Path(__file__).parent.parent.absolute().__str__())  # to run '$ python *.py' files in subdirectories
 logger = logging.getLogger(__name__)
@@ -20,7 +21,11 @@ import torch.nn.functional as F
 import math
 from models.common import *
 from models.replknet import *
-from models.gpvit import *
+try:
+    from models.gpvit import *
+except:
+    warnings.warn('Package mmdet is not installed. You can follow https://github.com/ChenhongyiYang/GPViT to install dependencies.')
+    SpatialPriorModule = GPViTAdapterSingleStageESOD = None
 from models.spconv import SPYOLOv5Head, SPYOLOv6Head
 from models.experimental import *
 from utils.autoanchor import check_anchor_order

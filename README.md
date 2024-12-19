@@ -9,7 +9,9 @@ This repository is the offical implementation of [**Efficient Small Object Detec
 [**PyTorch>=1.7**](https://pytorch.org/get-started/locally/):
 
 ```bash
-pip install -r requirements.txt
+# (optional) conda install cuda-toolkit=11.8 -c pytorch
+
+pip install -r requirements.txt -f https://download.pytorch.org/whl/torch_stable.html
 ```
 
 ## Data Preparation
@@ -67,7 +69,7 @@ python scripts/data_prepare.py --dataset TinyPerson
 
 ## Training
 
-Run commands below to reproduce results on the datasets, *e.g.*, [VisDrone](http://aiskyeye.com/). Download the pretrained weights (e.g., [YOLOv5m](https://github.com/ultralytics/yolov5/releases/download/v5.0/yolov5m.pt)) and put them to the `weights/` directory first.
+Run commands below to reproduce results on the datasets, *e.g.*, [VisDrone](http://aiskyeye.com/). Download the pretrained weights (e.g., [YOLOv5m](https://github.com/ultralytics/yolov5/releases/download/v5.0/yolov5m.pt)) and put them to the `weights/pretrained/` directory first.
 
 * **Training on Single GPU**
 

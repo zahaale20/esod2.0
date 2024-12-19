@@ -131,7 +131,7 @@ def build_sampler(cfg):
     elif upsample_mode == 'deconv5':
         sampler = DeConvUpSampler(num_conv=upsample_transform_num_conv, use_leaky_relu=True)
     elif upsample_mode == 'downsample':
-        downsample_rate = torch.round(1 / torch.Tensor(upsample_rate)).numpy().astype(np.int).tolist()
+        downsample_rate = torch.round(1 / torch.Tensor(upsample_rate)).numpy().astype(np.int64).tolist()
         print("use downsample rate {}".format(downsample_rate))
         sampler = PoolDownSampler(downsample_rate)
     else:

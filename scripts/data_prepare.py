@@ -15,6 +15,7 @@ import math
 import torch
 import torch.nn.functional as F
 
+import sys; sys.path.append('./')
 from utils.general import gaussian2D
 
 try:
@@ -202,7 +203,7 @@ def prepare_visdrone():
                  '3': 'bicycle', '4': 'car', '5': 'van', '6': 'truck',
                  '7': 'tricycle', '8': 'awning-tricycle', '9': 'bus',
                  '10': 'motor', '11': 'others'}
-    split_dict = {'test-dev': 'test.txt', 'val': 'valid.txt', 'train': 'train.txt'}
+    split_dict = {'test-dev': 'test-dev.txt', 'val': 'val.txt', 'train': 'train.txt'}
     root = opt.dataset
 
     os.mkdir(join(root, 'split'))

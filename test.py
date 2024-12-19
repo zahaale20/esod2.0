@@ -15,7 +15,7 @@ from models.experimental import attempt_load
 from utils.datasets import create_dataloader, norm_imgs
 from utils.general import coco80_to_coco91_class, check_dataset, check_file, check_img_size, check_requirements, \
     box_iou, non_max_suppression, scale_coords, xyxy2xywh, xywh2xyxy, set_logging, increment_path, colorstr, \
-    target2mask, target2mask2, check_mask
+    target2mask, check_mask
 from utils.metrics import ap_per_class, ConfusionMatrix, cluster_recall, sparse_recall, mask_pr, hm_verbose
 from utils.plots import plot_images, output_to_target, plot_study_txt, LatencyBucket
 from utils.torch_utils import select_device, time_synchronized, model_info

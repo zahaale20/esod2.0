@@ -31,7 +31,7 @@ from utils.autoanchor import check_anchors
 from utils.datasets import create_dataloader, norm_imgs
 from utils.general import labels_to_class_weights, increment_path, labels_to_image_weights, init_seeds, \
     fitness, strip_optimizer, get_latest_run, check_dataset, check_file, check_git_status, check_img_size, \
-    check_requirements, print_mutation, set_logging, one_cycle, colorstr, target2mask, target2mask2, check_mask
+    check_requirements, print_mutation, set_logging, one_cycle, colorstr, target2mask, check_mask
 from utils.google_utils import attempt_download
 from utils.loss import ComputeLoss
 from utils.plots import plot_images, plot_labels, plot_results, plot_evolution, plot_cluster
@@ -44,6 +44,7 @@ def train(hyp, opt, device, tb_writer=None):
     logger.info(colorstr('hyperparameters: ') + ', '.join(f'{k}={v}' for k, v in hyp.items()))
     save_dir, epochs, batch_size, total_batch_size, weights, rank = \
         Path(opt.save_dir), opt.epochs, opt.batch_size, opt.total_batch_size, opt.weights, opt.global_rank
+    half_precision = not opt.disable_half
 
     # Directories
     wdir = save_dir / 'weights'
@@ -95,7 +96,7 @@ def train(hyp, opt, device, tb_writer=None):
         model = Model(opt.cfg or ckpt['model'].yaml, ch=3, nc=nc, anchors=hyp.get('anchors')).to(device)  # create
         exclude = ['anchor'] if (opt.cfg or hyp.get('anchors')) and not opt.resume and not opt.freeze else []  # exclude keys
         state_dict = ckpt['model'].float().state_dict()  # to FP32
-        state_dict = intersect_dicts(state_dict, model.state_dict(), exclude=exclude)  # intersect
+        state_dict = intersect_dicts(state_dict, model.state_dict(), exclude=exclude, cfg_path=opt.cfg)  # intersect
         model.load_state_dict(state_dict, strict=False)  # load
         logger.info('Transferred %g/%g items from %s' % (len(state_dict), len(model.state_dict()), weights))  # report
     else:
@@ -334,7 +335,6 @@ def train(hyp, opt, device, tb_writer=None):
                     masks = F.interpolate(masks, size=[_s // mask_stride for _s in ns], mode='nearest')
 
             # Forward
-            half_precision = False  # set to `True` for compatibility for DCN and RTMDet
             with amp.autocast(enabled=cuda and half_precision):
                 targets = targets.to(device)
                 pred = model((imgs, [masks]) if (use_gt and warmup_flag) else imgs, hm_only=opt.hm_only)  # forward
@@ -535,6 +535,7 @@ if __name__ == '__main__':
     parser.add_argument('--freeze', action='store_true', help='freeze shadow backbone for fine-tuning')
     parser.add_argument('--hm-only', action='store_true', help='training on heatmap prediction only')
     parser.add_argument('--hm-metric', action='store_true', help='use heatmap-related evaluation metrics')
+    parser.add_argument('--disable-half', action='store_true', help='disable FP16 half-precision training')
     opt = parser.parse_args()
 
     # Set DDP variables

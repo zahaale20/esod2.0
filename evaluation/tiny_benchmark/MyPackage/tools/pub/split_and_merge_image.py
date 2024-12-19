@@ -52,7 +52,7 @@ class SplitImage(object):
         :return: np.ndarray, (x1, y1, x2, y2), shape=(ph, pw, 4), corner of sub images.
         """
         size, pieces, overlap = np.array(image_size), np.array(list(pieces)), np.array(list(overlap))
-        stride = np.ceil((size - overlap) / pieces).astype(np.int)
+        stride = np.ceil((size - overlap) / pieces).astype(np.int64)
         return self.__get_corners(image_size, pieces, stride, overlap)
 
     def __get_sub_image_corners_by_size(self, image_size, sub_image_size, overlap=(0, 0)):
@@ -75,7 +75,7 @@ class SplitImage(object):
             sub_image_size = least_pieces_size(image_size, sub_image_size)
 
         size, sub_image_size, overlap = np.array(image_size), np.array(list(sub_image_size)), np.array(list(overlap))
-        stride = np.ceil(sub_image_size - overlap).astype(np.int)
+        stride = np.ceil(sub_image_size - overlap).astype(np.int64)
         piece = np.ceil((size - overlap) / (sub_image_size - overlap)).astype(int)
         return self.__get_corners(image_size, piece, stride, overlap)
 

@@ -112,7 +112,7 @@ def build_transforms(cfg, is_train=True):
             l, r, t, b = -xmin, xmax, -ymin, ymax
             blue, green, red = cfg.INPUT.PIXEL_MEAN
             transform.append(MT.RandomCrop(size=None, padding=(l, t, r, b),
-                                           fill=np.array([red, green, blue]).astype(np.int)))
+                                           fill=np.array([red, green, blue]).astype(np.int64)))
 
         if cfg.DATALOADER.USE_SCALE_MATCH:
             resize = MT.ScaleMatchFactory.create(cfg.DATALOADER.SCALE_MATCH)
