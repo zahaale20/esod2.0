@@ -11,19 +11,21 @@ This repository is the offical implementation of [**Efficient Small Object Detec
 ```bash
 # (optional) conda install cuda-toolkit=11.8 -c pytorch
 
-pip install -r requirements.txt -f https://download.pytorch.org/whl/torch_stable.html
+pip install torch==1.8.1+cu111 torchvision==0.9.1+cu111 -f https://download.pytorch.org/whl/torch_stable.html
+pip install -r requirements.txt 
+pip install setuptools==59.5.0
 ```
 
 ## Data Preparation
 
-We currently support [**VisDrone**](http://aiskyeye.com/), [**UAVDT**](https://sites.google.com/view/grli-uavdt/%E9%A6%96%E9%A1%B5), and [**TinyPerson**](https://github.com/ucas-vg/TinyBenchmark) datasets. Follow the instructions below to prepare datasets.
+We currently support [**VisDrone**](https://github.com/VisDrone/VisDrone-Dataset), [**UAVDT**](https://sites.google.com/view/grli-uavdt/%E9%A6%96%E9%A1%B5), and [**TinyPerson**](https://github.com/ucas-vg/TinyBenchmark) datasets. Follow the instructions below to prepare datasets.
 
 <details>
 <summary>Data Prepare (click to expand)</summary>
 
 * **Darknet Format**: The Darknet framework **locates labels automatically for each image** by replacing the last instance of `/images/` in each image path with `/labels/`. For example:
 
-```bash  
+```  
 dataset/images/im0.jpg
 dataset/labels/im0.txt
 ```
@@ -37,9 +39,9 @@ cd third_party/segment-anything
 pip install -e .
 ```
 
-* **Dataset - VisDrone**: Download the [data](http://aiskyeye.com/download/object-detection-2/), and ensure the subsets under the `/path/to/visdrone` directory are as follows:
+* **Dataset - VisDrone**: Download the [data](https://github.com/VisDrone/VisDrone-Dataset), and ensure the subsets under the `/path/to/visdrone` directory are as follows:
 
-```bash
+```
 VisDrone2019-DET-train  VisDrone2019-DET-val  VisDrone2019-DET-test-dev  VisDrone2019-DET-test-challenge
 ```
 
@@ -69,7 +71,7 @@ python scripts/data_prepare.py --dataset TinyPerson
 
 ## Training
 
-Run commands below to reproduce results on the datasets, *e.g.*, [VisDrone](http://aiskyeye.com/). Download the pretrained weights (e.g., [YOLOv5m](https://github.com/ultralytics/yolov5/releases/download/v5.0/yolov5m.pt)) and put them to the `weights/pretrained/` directory first.
+Run commands below to reproduce results on the datasets, *e.g.*, [VisDrone](https://github.com/VisDrone/VisDrone-Dataset). Download the pretrained weights (e.g., [YOLOv5m](https://github.com/ultralytics/yolov5/releases/download/v5.0/yolov5m.pt)) and put them to the `weights/pretrained/` directory first.
 
 * **Training on Single GPU**
 
@@ -170,7 +172,7 @@ python detect.py --weights weights/yolov5m.pt --source data/images/visdrone.txt 
 
 ## Acknowledgment
 
-A large part of the code is borrowed from YOLO. Many thanks for this wonderful work.
+A large part of the code is borrowed from [YOLO](https://github.com/ultralytics/yolov5). Many thanks for this wonderful work.
 
 ## Citation
 
@@ -180,10 +182,9 @@ If you find this work useful in your research, please kindly cite the paper:
 @article{liu2024esod,
       title={ESOD: Efficient Small Object Detection on High-Resolution Images}, 
       author={Liu, Kai and Fu, Zhihang and Jin, Sheng and Chen, Ze and Zhou, Fan and Jiang, Rongxin and Chen, Yaowu and Ye, Jieping},
+      journal={IEEE Transactions on Image Processing},
       year={2024},
-      eprint={2407.16424},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV},
+      publisher={IEEE},
       url={https://arxiv.org/abs/2407.16424}, 
 }
 ```
