@@ -172,7 +172,7 @@ python detect.py --weights weights/yolov5m.pt --source data/images/visdrone.txt 
 
 ## Pretrained Weights
 
-[ ] coming soon.
+- [x] Please find the pre-trained weights from [Google Drive](https://drive.google.com/drive/folders/1jrrtG34q6gqdGMx7SflNK1uM6iiVKpin?usp=drive_link)
 
 
 ## Acknowledgment
@@ -184,13 +184,13 @@ A large part of the code is borrowed from [YOLO](https://github.com/ultralytics/
 If you find this work useful in your research, please kindly cite the paper:
 
 ```
-@article{liu2024esod,
-      title={ESOD: Efficient Small Object Detection on High-Resolution Images}, 
-      author={Liu, Kai and Fu, Zhihang and Jin, Sheng and Chen, Ze and Zhou, Fan and Jiang, Rongxin and Chen, Yaowu and Ye, Jieping},
-      journal={IEEE Transactions on Image Processing},
-      year={2024},
-      publisher={IEEE},
-      url={https://arxiv.org/abs/2407.16424}, 
+@article{liu2025esod,
+    title={ESOD: Efficient Small Object Detection on High-Resolution Images},
+    author={Liu, Kai and Fu, Zhihang and Jin, Sheng and Chen, Ze and Zhou, Fan and Jiang, Rongxin and Chen, Yaowu and Ye, Jieping},
+    journal={IEEE Transactions on Image Processing},
+    volume={34},
+    pages={183--195},
+    year={2025}
 }
 ```
 

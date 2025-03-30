@@ -95,7 +95,7 @@ def segment_image(image, labels, width, height):
                 labels_ = np.stack((labels[indices, 0], xc_, yc_, w_, h_), axis=1)
 
                 x1_, y1_, x2_, y2_ = width_*i, height_*j, width_*(i+1), height_*(j+1)
-                mask_k, invalid_k = segment_image(image[y1_:y2_, x1_:x2_], labels_, width, height)
+                mask_k, invalid_k = segment_image(image[y1_:y2_, x1_:x2_], labels_, width_, height_)
                 mask[y1_:y2_, x1_:x2_] = mask_k
                 invalid[indices] |= invalid_k
 
@@ -206,9 +206,9 @@ def prepare_visdrone():
     split_dict = {'test-dev': 'test-dev.txt', 'val': 'val.txt', 'train': 'train.txt'}
     root = opt.dataset
 
-    os.mkdir(join(root, 'split'))
+    os.makedirs(join(root, 'split'), exist_ok=True)
     for sub_dir in glob(join(root, 'VisDrone2019-DET-*')):
-        os.mkdir(join(sub_dir, 'labels'))
+        os.makedirs(join(sub_dir, 'labels'), exist_ok=True)
         images = sorted(glob(join(sub_dir, 'images', '*.jpg')))
         if 'test-challenge' in sub_dir:
             with open(join(root, 'split', 'test-challenge.txt'), 'w+') as f:
@@ -220,6 +220,8 @@ def prepare_visdrone():
             image = cv2.imread(image_path)
             height, width, _ = image.shape
             label_path = image_path.replace('images', 'annotations').replace('.jpg', '.txt')
+            # if "masked" in label_path:  # avoid repeated processing
+            #     continue
             assert exists(label_path)
             label_lines = []
             masked = False
@@ -241,12 +243,10 @@ def prepare_visdrone():
                 image_path = image_path.replace('.jpg', '_masked.jpg')
                 cv2.imwrite(image_path, image)
             # for consistency
-            with open(image_path.replace('.jpg', '.txt'), 'w+') as f:
-                f.writelines(label_lines)
-            with open(image_path.replace('images', 'labels').replace('.jpg', '.txt'), 'w+') as f:
+            label_path = image_path.replace('images', 'annotations').replace('.jpg', '.txt')
+            with open(label_path, 'w+') as f:
                 f.writelines(label_lines)
 
-            label_path = image_path.replace('.jpg', '.txt')
             gen_mask(label_path, image, cls_ratio=True)
 
             data_paths.append(image_path + '\n')
