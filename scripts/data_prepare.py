@@ -243,7 +243,7 @@ def prepare_visdrone():
                 image_path = image_path.replace('.jpg', '_masked.jpg')
                 cv2.imwrite(image_path, image)
             # for consistency
-            label_path = image_path.replace('images', 'annotations').replace('.jpg', '.txt')
+            label_path = image_path.replace('images', 'labels').replace('.jpg', '.txt')
             with open(label_path, 'w+') as f:
                 f.writelines(label_lines)
 
