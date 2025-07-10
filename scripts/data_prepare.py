@@ -219,7 +219,7 @@ def prepare_visdrone():
     os.makedirs(join(root, 'split'), exist_ok=True)
     for sub_dir in glob(join(root, 'VisDrone2019-DET-*')):
         os.makedirs(join(sub_dir, 'labels'), exist_ok=True)
-        images = sorted(glob(join(sub_dir, 'images', '*.jpg')))
+        images = sorted(glob(join(sub_dir, 'images', '*[!_masked].jpg')))
         if 'test-challenge' in sub_dir:
             with open(join(root, 'split', 'test-challenge.txt'), 'w+') as f:
                 f.writelines([line + '\n' for line in images])
