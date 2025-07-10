@@ -160,6 +160,7 @@ def gen_mask(label_path, image, cls_ratio=False, thresh=0.5, sam_only=False):
     
     if predictor is not None:
         sam_res, invalid = segment_image(image, labels, width, height)
+        print("SAM ✓", sam_res.shape)
         if stride != 1:
             sam_res = F.interpolate(sam_res[None, None, ...].float(), size=(ny, nx), mode='bilinear', align_corners=False)[0, 0]
             # sam_res = F.interpolate(sam_res[None, None, ...].float(), size=(ny, nx), mode='nearest')[0, 0]
