@@ -18,19 +18,29 @@ import torch.nn.functional as F
 import sys; sys.path.append('./')
 from utils.general import gaussian2D
 
-try:
-    from segment_anything import SamPredictor, sam_model_registry
+# try:
+#     from segment_anything import SamPredictor, sam_model_registry
 
-    sam_checkpoint = "./weights/sam_vit_h_4b8939.pth"
-    model_type = "vit_h"
-    device = "cuda"
+#     sam_checkpoint = "./weights/sam_vit_h_4b8939.pth"
+#     model_type = "vit_h"
+#     device = "cuda"
 
-    sam = sam_model_registry[model_type](checkpoint=sam_checkpoint).to(device) #.half()  Warning: Precision Drops
-    dtype = next(sam.named_parameters())[1].dtype
-    predictor = SamPredictor(sam)
-except:
-    warnings.warn('It is recommended to install segment-anything for better pseudo masks. See instructions in README.md.')
-    predictor = None
+#     sam = sam_model_registry[model_type](checkpoint=sam_checkpoint).to(device) #.half()  Warning: Precision Drops
+#     dtype = next(sam.named_parameters())[1].dtype
+#     predictor = SamPredictor(sam)
+# except:
+#     warnings.warn('It is recommended to install segment-anything for better pseudo masks. See instructions in README.md.')
+#     predictor = None
+
+from segment_anything import SamPredictor, sam_model_registry
+
+sam_checkpoint = "./weights/sam_vit_h_4b8939.pth"
+model_type = "vit_h"
+device = "cuda"
+
+sam = sam_model_registry[model_type](checkpoint=sam_checkpoint).to(device) #.half()  Warning: Precision Drops
+dtype = next(sam.named_parameters())[1].dtype
+predictor = SamPredictor(sam)
 
 
 ############ utils ############
