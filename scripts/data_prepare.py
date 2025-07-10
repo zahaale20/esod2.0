@@ -161,7 +161,7 @@ def gen_mask(label_path, image, cls_ratio=False, thresh=0.5, sam_only=False):
         if stride != 1:
             sam_res = F.interpolate(sam_res[None, None, ...].float(), size=(ny, nx), mode='bilinear', align_corners=False)[0, 0]
             # sam_res = F.interpolate(sam_res[None, None, ...].float(), size=(ny, nx), mode='nearest')[0, 0]
-        sam_res = (sam_res > 0.5).float().half().numpy()
+        sam_res = (sam_res > 0.5).float().cpu().numpy()
 
     c, xc, yc, w, h = labels.T
     x1, y1, x2, y2 = ((xc - w / 2.) * nx).astype(np.int32).clip(0), \
