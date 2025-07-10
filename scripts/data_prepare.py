@@ -42,6 +42,8 @@ sam = sam_model_registry[model_type](checkpoint=sam_checkpoint).to(device).half(
 dtype = next(sam.named_parameters())[1].dtype
 predictor = SamPredictor(sam)
 
+assert predictor is not None, "SAM failed to load – aborting."
+
 
 ############ utils ############
 
