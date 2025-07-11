@@ -28,8 +28,35 @@ try:
     sam = sam_model_registry[model_type](checkpoint=sam_checkpoint).to(device) #.half()  Warning: Precision Drops
     dtype = next(sam.named_parameters())[1].dtype
     predictor = SamPredictor(sam)
-except:
-    warnings.warn('It is recommended to install segment-anything for better pseudo masks. See instructions in README.md.')
+except ImportError as e: # library not installed
+    warnings.warn(
+        "segment-anything library is missing "
+        f"({e}).  Falling back to Gaussian masks.\n"
+        "Fix: pip install -e third_party/segment-anything"
+    )
+    predictor = None
+
+except FileNotFoundError as e: # checkpoint not found
+    warnings.warn(
+        "SAM checkpoint file not found. "
+        f"({e})\n"
+        "Make sure ./weights/sam_vit_h_4b8939.pth exists."
+    )
+    predictor = None
+
+except RuntimeError as e: # GPU / CUDA issues
+    warnings.warn(
+        "SAM model failed to load on the requested device.\n"
+        f"{e}\n"
+        "Try switching to CPU (device='cpu') or check your CUDA setup."
+    )
+    predictor = None
+
+except Exception as e: # catch-all fallback
+    warnings.warn(
+        f"Unexpected error initialising SAM ({e}). "
+        "Gaussian masks will be used instead."
+    )
     predictor = None
 
 
