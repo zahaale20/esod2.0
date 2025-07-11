@@ -25,7 +25,7 @@ try:
     model_type = "vit_h"
     device = "cuda"
 
-    sam = sam_model_registry[model_type](checkpoint=sam_checkpoint).to(device) #.half()  Warning: Precision Drops
+    sam = sam_model_registry[model_type](checkpoint=sam_checkpoint).to(device).half()  #Warning: Precision Drops
     dtype = next(sam.named_parameters())[1].dtype
     predictor = SamPredictor(sam)
 except ImportError as e: # library not installed
