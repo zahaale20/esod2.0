@@ -59,6 +59,12 @@ except Exception as e: # catch-all fallback
     )
     predictor = None
 
+if predictor is None:
+    print(None)
+else:
+    print(predictor)
+    print(f"SAMPredictor(model_type={model_type}, device={device}, dtype={dtype})")
+
 
 ############ utils ############
 
@@ -172,7 +178,7 @@ def gen_mask(label_path, image, cls_ratio=False, thresh=0.5, sam_only=False):
 
     mask = np.zeros((ny, nx), dtype=np.float16)
     weight = np.ones_like(mask)
-    
+
     if predictor is not None:
         sam_res, invalid = segment_image(image, labels, width, height)
         if stride != 1:
