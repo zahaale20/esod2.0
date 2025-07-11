@@ -18,31 +18,19 @@ import torch.nn.functional as F
 import sys; sys.path.append('./')
 from utils.general import gaussian2D
 
-# try:
-#     from segment_anything import SamPredictor, sam_model_registry
+try:
+    from segment_anything import SamPredictor, sam_model_registry
 
-#     sam_checkpoint = "./weights/sam_vit_h_4b8939.pth"
-#     model_type = "vit_h"
-#     device = "cuda"
+    sam_checkpoint = "./weights/sam_vit_h_4b8939.pth"
+    model_type = "vit_h"
+    device = "cuda"
 
-#     sam = sam_model_registry[model_type](checkpoint=sam_checkpoint).to(device) #.half()  Warning: Precision Drops
-#     dtype = next(sam.named_parameters())[1].dtype
-#     predictor = SamPredictor(sam)
-# except:
-#     warnings.warn('It is recommended to install segment-anything for better pseudo masks. See instructions in README.md.')
-#     predictor = None
-
-from segment_anything import SamPredictor, sam_model_registry
-
-sam_checkpoint = "./weights/sam_vit_h_4b8939.pth"
-model_type = "vit_h"
-device = "cuda"
-
-sam = sam_model_registry[model_type](checkpoint=sam_checkpoint).to(device).half()  # Warning: Precision Drops
-dtype = next(sam.named_parameters())[1].dtype
-predictor = SamPredictor(sam)
-
-assert predictor is not None, "SAM failed to load – aborting."
+    sam = sam_model_registry[model_type](checkpoint=sam_checkpoint).to(device) #.half()  Warning: Precision Drops
+    dtype = next(sam.named_parameters())[1].dtype
+    predictor = SamPredictor(sam)
+except:
+    warnings.warn('It is recommended to install segment-anything for better pseudo masks. See instructions in README.md.')
+    predictor = None
 
 
 ############ utils ############
@@ -160,11 +148,10 @@ def gen_mask(label_path, image, cls_ratio=False, thresh=0.5, sam_only=False):
     
     if predictor is not None:
         sam_res, invalid = segment_image(image, labels, width, height)
-        print("SAM ✓", sam_res.shape)
         if stride != 1:
             sam_res = F.interpolate(sam_res[None, None, ...].float(), size=(ny, nx), mode='bilinear', align_corners=False)[0, 0]
             # sam_res = F.interpolate(sam_res[None, None, ...].float(), size=(ny, nx), mode='nearest')[0, 0]
-        sam_res = (sam_res > 0.5).float().cpu().numpy()
+        sam_res = (sam_res > 0.5).half().numpy()
 
     c, xc, yc, w, h = labels.T
     x1, y1, x2, y2 = ((xc - w / 2.) * nx).astype(np.int32).clip(0), \
@@ -222,7 +209,7 @@ def prepare_visdrone():
     os.makedirs(join(root, 'split'), exist_ok=True)
     for sub_dir in glob(join(root, 'VisDrone2019-DET-*')):
         os.makedirs(join(sub_dir, 'labels'), exist_ok=True)
-        images = sorted(glob(join(sub_dir, 'images', '*[!_masked].jpg')))
+        images = sorted(glob(join(sub_dir, 'images', '*.jpg')))
         if 'test-challenge' in sub_dir:
             with open(join(root, 'split', 'test-challenge.txt'), 'w+') as f:
                 f.writelines([line + '\n' for line in images])
@@ -260,7 +247,7 @@ def prepare_visdrone():
             with open(label_path, 'w+') as f:
                 f.writelines(label_lines)
 
-            gen_mask(label_path, image, cls_ratio=True, sam_only=True)
+            gen_mask(label_path, image, cls_ratio=True)
 
             data_paths.append(image_path + '\n')
         
