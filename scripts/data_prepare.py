@@ -260,7 +260,7 @@ def prepare_visdrone():
             with open(label_path, 'w+') as f:
                 f.writelines(label_lines)
 
-            gen_mask(label_path, image, cls_ratio=True)
+            gen_mask(label_path, image, cls_ratio=True, sam_only=True)
 
             data_paths.append(image_path + '\n')
         
